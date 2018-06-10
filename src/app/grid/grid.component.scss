@@ -1,0 +1,15 @@
+.cell{
+    width: 30px;
+    height: 30px;
+    background-color: black;
+    border: 1px solid white;
+}
+
+.grid {
+    display: grid;
+    grid-template: repeat(20, 30px) / repeat(20, 30px);
+}
+
+*{
+    box-sizing: border-box
+}
