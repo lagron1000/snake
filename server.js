@@ -13,4 +13,4 @@ app.get('/*', function(req,res) {
 res.sendFile(path.join(__dirname+'/dist/snake/index.html'));
 });
 // Start the app by listening on the default Heroku port
-console.log('listening on port ' + 8080)
+console.log('listening on port ' + '8080')
