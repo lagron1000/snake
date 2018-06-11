@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { Cell } from './cellModel';
 import { Snake } from './SnakeModel';
+import { Score } from './ScoreModel';
 
 @Injectable({
   providedIn: 'root'
@@ -14,13 +15,17 @@ export class SnakeService {
   currentApple
   keyPressed : string
   rowArray : Array<any>
+  score : Score = new Score
+  highScore : Score = new Score
   constructor() { 
     this.getGrid()  
     this.rowArray = [1, 21, 41, 61, 81, 101, 121, 141, 161, 181, 201, 221, 241, 261, 281, 301, 321, 341, 361, 381]  
     this.currentSnake = []
     this.currentApple = this.getApple()
-    console.log(this.getApple())
     this.gridSubject.asObservable()
+    this.score = {amount:0}
+    var highScoreStorage : Score = JSON.parse(localStorage.getItem('highscore'))
+    highScoreStorage.amount ? this.highScore.amount = highScoreStorage.amount : this.highScore.amount = 0;
     this.currentSnake.push(this.grid.find(function(cell) {
       return cell.id == 210;
     }))
@@ -37,10 +42,17 @@ export class SnakeService {
     // this.currentSnake = this.grid.find(function(cell) {
     //   return cell.id == 210;
     // });
-    console.log(this.currentSnake)
+  }
+  getScore(){
+    return this.score
+  }
+  getHighscore(){
+    return this.highScore
   }
   startGame(){
     this.currentSnake = []
+    this.keyPressed = undefined
+    this.score.amount = 0    
     this.currentSnake.push(this.grid.find(function(cell) {
       return cell.id == 210;
     }))
@@ -90,14 +102,18 @@ export class SnakeService {
   });
   for (let index = 1; index < this.currentSnake.length; index++){
     if (this.currentSnake[0].id === this.currentSnake[index].id){
+      if (this.score.amount > this.highScore.amount){
+        this.highScore.amount = this.score.amount
+        localStorage.setItem('highscore', JSON.stringify(this.highScore));
+      }
       this.startGame()
     }
   }
   if (this.currentSnake[0].id === this.currentApple.id){
+    this.score.amount++    
     this.currentSnake.push(this.currentApple)
     this.currentApple = this.getApple()
   }
-  console.log(this.currentSnake + 'test')
   }
   moveDown(){
     debugger
@@ -117,13 +133,17 @@ export class SnakeService {
         }
     });
     
-    console.log(this.currentSnake)
     for (let index = 1; index < this.currentSnake.length; index++){
       if (this.currentSnake[0].id === this.currentSnake[index].id){
+        if (this.score.amount > this.highScore.amount){
+          this.highScore.amount = this.score.amount
+                  localStorage.setItem('highscore', JSON.stringify(this.highScore));
+        }
         this.startGame()
       }
     }
     if (this.currentSnake[0].id === this.currentApple.id){
+      this.score.amount++    
       this.currentSnake.push(this.currentApple)
       this.currentApple = this.getApple()
     }
@@ -147,10 +167,15 @@ export class SnakeService {
     });
     for (let index = 1; index < this.currentSnake.length; index++){
       if (this.currentSnake[0].id === this.currentSnake[index].id){
+        if (this.score.amount > this.highScore.amount){
+          this.highScore.amount = this.score.amount
+                  localStorage.setItem('highscore', JSON.stringify(this.highScore));
+        }
         this.startGame()
       }
     }
     if (this.currentSnake[0].id === this.currentApple.id){
+      this.score.amount++    
       this.currentSnake.push(this.currentApple)
       this.currentApple = this.getApple()
     }
@@ -175,10 +200,15 @@ export class SnakeService {
   });
   for (let index = 1; index < this.currentSnake.length; index++){
     if (this.currentSnake[0].id === this.currentSnake[index].id){
+      if (this.score.amount > this.highScore.amount){
+        this.highScore.amount = this.score.amount
+                localStorage.setItem('highscore', JSON.stringify(this.highScore));
+      }
       this.startGame()
     }
   }
   if (this.currentSnake[0].id === this.currentApple.id){
+    this.score.amount++    
     this.currentSnake.push(this.currentApple)
     this.currentApple = this.getApple()
   }
@@ -190,7 +220,7 @@ export class SnakeService {
       if (event.key !== 'ArrowDown'){
         this.keyPressed = event.key
         this.moveUp()
-        setTimeout(() =>{ this.arrowUpRecurssion(event); }, 100);
+        setTimeout(() =>{ this.arrowUpRecurssion(event); }, 70);
         
       }
 }
@@ -201,7 +231,7 @@ arrowDownRecurssion(event){
     if (event.key !== 'ArrowUp'){
       this.keyPressed = event.key
       this.moveDown()
-      setTimeout(() =>{ this.arrowDownRecurssion(event); }, 100);
+      setTimeout(() =>{ this.arrowDownRecurssion(event); }, 70);
       
     }
 }
@@ -212,7 +242,7 @@ arrowRightRecurssion(event){
     if (event.key !== 'ArrowLeft'){
       this.keyPressed = event.key
       this.moveRight()
-      setTimeout(() =>{ this.arrowRightRecurssion(event); }, 100);
+      setTimeout(() =>{ this.arrowRightRecurssion(event); }, 70);
       
     }
 }
@@ -223,41 +253,49 @@ arrowLedtRecurssion(event){
     if (event.key !== 'ArrowRight'){
       this.keyPressed = event.key
       this.moveLeft()
-      setTimeout(() =>{ this.arrowLedtRecurssion(event); }, 100);
+      setTimeout(() =>{ this.arrowLedtRecurssion(event); }, 70);
       
     }
 }
   handleKeyPress(event){
-    if (!this.keyPressed){
-      if (event.key == 'ArrowUp' || event.key == 'ArrowDown' || event.key == 'ArrowRight' || event.key == 'ArrowLeft')
-      this.keyPressed = event.key
-    }
+    // if (!this.keyPressed){
+    //   if (event.key == 'ArrowUp' || event.key == 'ArrowDown' || event.key == 'ArrowRight' || event.key == 'ArrowLeft')
+    //   this.keyPressed = event.key
+    // }
     if (event.key == 'ArrowUp'){
+      if (this.keyPressed !== 'ArrowDown' && this.keyPressed !== 'ArrowUp'){
       this.keyPressed = event.key      
       this.arrowUpRecurssion(event)
+      }
     } else if (event.key == 'ArrowDown'){
-
+      if (this.keyPressed !== 'ArrowUp' && this.keyPressed !== 'ArrowDown'){
         this.keyPressed = event.key
         this.arrowDownRecurssion(event)
-      
+      }
     } else if (event.key == 'ArrowRight'){
-
+      debugger
+      if (this.keyPressed && this.keyPressed !== 'ArrowLeft' && this.keyPressed !== 'ArrowRight'){
         this.keyPressed = event.key
         this.arrowRightRecurssion(event)
-      
+      }
     } else if (event.key == 'ArrowLeft'){
+      if (this.keyPressed !== 'ArrowRight' && this.keyPressed !== 'ArrowLeft'){
         this.keyPressed = event.key
         this.arrowLedtRecurssion(event)
+      }
     }
-    console.log(this.currentSnake)
   }
   checkStyle(id){
+    debugger
     for (let i=0; i<this.currentSnake.length; i++){
-      if (this.currentSnake[i].id === id){
-        return "green";
+      if (this.currentSnake[0].id === id){
+        return "green"
+      }
+      else if (this.currentSnake[i].id === id){
+        return "linear-gradient(darkgreen, black)";
       } else {
         if (this.currentApple.id === id){
-          return "red";
+          return "linear-gradient(red, black)";
         }
       }      
     }

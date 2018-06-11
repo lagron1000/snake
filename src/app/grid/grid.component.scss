@@ -2,14 +2,29 @@
     width: 30px;
     height: 30px;
     background-color: black;
-    border: 1px solid white;
+    // border: 1px solid white;
 }
 
 .grid {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
     display: grid;
     grid-template: repeat(20, 30px) / repeat(20, 30px);
+}
+.score {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+
+
+
 }
 
 *{
     box-sizing: border-box
+}
+
+.grid-app {
+    display: grid;
+    grid-template: auto / 1fr 1fr;
+    
 }

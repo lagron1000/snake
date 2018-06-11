@@ -1,5 +1,16 @@
+<div class="grid-app">
+
+    
+<div class="score">
+        <h3>Current score is: {{score.amount}}</h3>
+        <h3>Highscore is: {{highScore.amount}}</h3>
+</div>
 <div class="grid">
     <div *ngFor="let cell of grid; let i = index">
         <app-cell [myId]="i+1"></app-cell>
     </div>
+</div>
+
+
+
 </div>
