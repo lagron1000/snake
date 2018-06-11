@@ -17,13 +17,15 @@ export class SnakeService {
   rowArray : Array<any>
   score : Score = new Score
   highScore : Score = new Score
+  isPaused : boolean
   constructor() { 
+    this.isPaused = false
     this.getGrid()  
     this.rowArray = [1, 21, 41, 61, 81, 101, 121, 141, 161, 181, 201, 221, 241, 261, 281, 301, 321, 341, 361, 381]  
     this.currentSnake = []
     this.currentApple = this.getApple()
     this.gridSubject.asObservable()
-    this.score = {amount:0}
+    this.score.amount = 0
     var highScoreStorage : Score = JSON.parse(localStorage.getItem('highscore'))
     highScoreStorage.amount ? this.highScore.amount = highScoreStorage.amount : this.highScore.amount = 0;
     this.currentSnake.push(this.grid.find(function(cell) {
@@ -262,7 +264,12 @@ arrowLedtRecurssion(event){
     //   if (event.key == 'ArrowUp' || event.key == 'ArrowDown' || event.key == 'ArrowRight' || event.key == 'ArrowLeft')
     //   this.keyPressed = event.key
     // }
-    if (event.key == 'ArrowUp'){
+    console.log(event.key)
+    if (event.key === ' '){
+      this.isPaused = !this.isPaused
+      this.keyPressed = undefined
+    }
+     else if (event.key == 'ArrowUp'){
       if (this.keyPressed !== 'ArrowDown' && this.keyPressed !== 'ArrowUp'){
       this.keyPressed = event.key      
       this.arrowUpRecurssion(event)

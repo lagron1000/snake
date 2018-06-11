@@ -4,6 +4,7 @@
 <div class="score">
         <h3>Current score is: {{score.amount}}</h3>
         <h3>Highscore is: {{highScore.amount}}</h3>
+        <h1 *ngIf="isPaused" style="color: chartreuse">PAUSED</h1>
 </div>
 <div class="grid">
     <div *ngFor="let cell of grid; let i = index">

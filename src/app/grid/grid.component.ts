@@ -17,8 +17,10 @@ export class GridComponent implements OnInit {
   keyPressed
   score : Score
   highScore : Score
+  isPaused : boolean
 
   constructor(private snakeService : SnakeService) {
+    this.isPaused = this.snakeService.isPaused
     this.grid = this.snakeService.grid;
     this.score = this.snakeService.getScore()
     this.highScore = this.snakeService.highScore
