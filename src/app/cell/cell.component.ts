@@ -1,5 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, DoCheck } from '@angular/core';
 import { Cell } from '../cellModel';
+import { SnakeService } from '../snake.service';
+import { Snake } from '../SnakeModel';
 
 @Component({
   selector: 'app-cell',
@@ -10,16 +12,27 @@ export class CellComponent implements OnInit {
 
  @Input() myId : number;  
   cell : Cell = new Cell()
-  snake : Object
+  snake : Snake
   background : Object
   apple : Object
+  showStyle : boolean
 
 
-  constructor() {
+  constructor(private snakeService : SnakeService) {
     this.cell.id = this.myId
+    this.showStyle = false
    }
 
   ngOnInit() {
+    for (let i = 0; i<this.snakeService.currentSnake.length; i++){
+      if (this.snakeService.currentSnake[i].id === this.myId){
+        this.showStyle = true
+      }
+    }
   }
+  getStyle() {
+    return this.snakeService.checkStyle(this.myId)
+  }
+
 
 }
