@@ -26,7 +26,8 @@ export class SnakeService {
     this.currentApple = this.getApple()
     this.gridSubject.asObservable()
     this.score.amount = 0
-    var highScoreStorage : Score = JSON.parse(localStorage.getItem('highscore'))
+
+    var highScoreStorage : Score = JSON.parse(localStorage.getItem('highscore')) || {amount:0}
     highScoreStorage.amount ? this.highScore.amount = highScoreStorage.amount : this.highScore.amount = 0;
     this.currentSnake.push(this.grid.find(function(cell) {
       return cell.id == 210;
@@ -299,13 +300,12 @@ arrowLedtRecurssion(event){
         return "green"
       }
       else if (this.currentSnake[i].id === id){
-        return "linear-gradient(darkgreen, black)";
+        return "linear-gradient(to bottom right, darkgreen, black)";
       } else {
         if (this.currentApple.id === id){
           return "linear-gradient(red, black)";
         }
       }      
     }
-
   }
 }
