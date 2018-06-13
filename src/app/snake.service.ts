@@ -119,7 +119,6 @@ export class SnakeService {
   }
   }
   moveDown(){
-    debugger
         for (let i = this.currentSnake.length-1; i>0; i--){
         var tempI = i - 1
         this.currentSnake[i] = this.grid.find((cell) => {
@@ -184,7 +183,6 @@ export class SnakeService {
     }
   }
   moveRight(){
-    debugger
     for (let i = this.currentSnake.length-1; i>0; i--){
       var tempI = i - 1
       this.currentSnake[i] = this.grid.find((cell) => {
@@ -194,7 +192,6 @@ export class SnakeService {
   var currentCellId = this.currentSnake[0].id
   this.currentSnake[0] = this.grid.find((cell) => {
     for (let j=0; j<this.rowArray.length; j++){
-      debugger
       if (currentCellId - this.rowArray[j] === 19){
         return cell.id === this.rowArray[j]
       }
@@ -265,7 +262,6 @@ arrowLedtRecurssion(event){
     //   if (event.key == 'ArrowUp' || event.key == 'ArrowDown' || event.key == 'ArrowRight' || event.key == 'ArrowLeft')
     //   this.keyPressed = event.key
     // }
-    console.log(event.key)
     if (event.key === ' '){
       this.isPaused = !this.isPaused
       this.keyPressed = undefined
@@ -281,7 +277,6 @@ arrowLedtRecurssion(event){
         this.arrowDownRecurssion(event)
       }
     } else if (event.key == 'ArrowRight'){
-      debugger
       if (this.keyPressed && this.keyPressed !== 'ArrowLeft' && this.keyPressed !== 'ArrowRight'){
         this.keyPressed = event.key
         this.arrowRightRecurssion(event)
@@ -294,7 +289,6 @@ arrowLedtRecurssion(event){
     }
   }
   checkStyle(id){
-    debugger
     for (let i=0; i<this.currentSnake.length; i++){
       if (this.currentSnake[0].id === id){
         return "green"
